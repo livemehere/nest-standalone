@@ -11,6 +11,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -24,15 +25,16 @@ export class ArticlesController {
   constructor(private articlesService: ArticlesService) {}
 
   @Post()
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articlesService.create(createArticleDto);
+  create(
+    @Body() createArticleDto: CreateArticleDto,
+    @User('id') userId: number,
+  ) {
+    return this.articlesService.create(createArticleDto, userId);
   }
 
   @Get()
-  findAll(@User() user) {
-    console.log(user);
-
-    return this.articlesService.findAll();
+  findAll(@Query() query) {
+    return this.articlesService.findAll(query);
   }
 
   @Get('/:id')

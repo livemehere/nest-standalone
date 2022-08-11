@@ -28,4 +28,12 @@ export class AuthController {
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
+
+  @Post('refresh')
+  refresh(@Headers() headers) {
+    const accessToken = headers.authorization.split(' ')[1];
+    const refreshtoken = headers.refreshtoken;
+
+    return this.authService.refresh(accessToken, refreshtoken);
+  }
 }
