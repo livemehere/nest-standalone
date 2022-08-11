@@ -24,27 +24,20 @@ export class ArticlesService {
   }
 
   async findAll(query: any) {
-    const option: FindManyOptions<Article> = {
-      where: { user: {} },
-      relations: ['user'],
+    const result = await this.articleRepository.find({
+      relations: {
+        user: true,
+      },
       select: {
         title: true,
+        content: true,
         user: {
           username: true,
         },
       },
-    };
+    });
 
-    if (query.userId) {
-      option.where['user'] = { id: query.userId };
-    }
-    if (query.title) {
-      option.where['title'] = query.title;
-    }
-
-    console.log(option);
-
-    return this.articleRepository.find(option);
+    return result;
   }
 
   findOne(id: number) {
