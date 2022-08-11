@@ -22,7 +22,7 @@ import { UsersModule } from './users/users.module';
       synchronize: true,
       autoLoadEntities: true,
       logging: true,
-      timezone: 'Asia/Seoul',
+      timezone: '-09:00',
       charset: 'utf8mb4',
     }),
     AuthModule,

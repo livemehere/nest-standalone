@@ -3,7 +3,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entity/article.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Between, FindManyOptions, Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 
 @Injectable()
@@ -31,9 +31,16 @@ export class ArticlesService {
       select: {
         title: true,
         content: true,
+        createdAt: true,
         user: {
           username: true,
         },
+      },
+      where: {
+        createdAt: Between(
+          new Date('2022-08-12T08:00:00Z'),
+          new Date('2022-08-12T08:30:00Z'),
+        ),
       },
     });
 
