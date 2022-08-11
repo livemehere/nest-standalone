@@ -1,3 +1,4 @@
+import { Client } from 'socket.io/dist/client';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -14,6 +15,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(client: Socket) {
     console.log(client.id);
+    client.join('A');
+
     console.log('user connect');
   }
 
@@ -25,6 +28,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('chat')
   async onChat(client: Socket, message) {
     console.log(message);
-    this.server.emit('chat', message);
+    this.server.to('A').emit('chat', message);
+  }
+
+  @SubscribeMessage('leave')
+  async leaveRoom(client: Socket, message) {
+    client.leave('A');
+  }
+
+  async sendAll(msg: string) {
+    console.log(this.server.emit('chat', { sender: 'server', msg }));
   }
 }
